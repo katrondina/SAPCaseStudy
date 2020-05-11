@@ -169,7 +169,7 @@ public class SwitchDisplay {
 		BufferedReader br3 = new BufferedReader(new InputStreamReader(System.in));
 		String idToUpdateString = br3.readLine();
 		int idToUpdate = Integer.parseInt(idToUpdateString);
-		System.out.print("Pending status changed to: ");
+		System.out.print("APPROVED / DENIED : ");
 		BufferedReader br4 = new BufferedReader(new InputStreamReader(System.in));
 		String enteredNewStatus = br4.readLine();
 		if (enteredNewStatus.equalsIgnoreCase(Constants.APPROVED)

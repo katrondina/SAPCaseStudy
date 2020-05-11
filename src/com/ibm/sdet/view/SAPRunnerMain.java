@@ -18,7 +18,7 @@ public class SAPRunnerMain {
 		//Initial load of xls file, if initial_load is true then this will execute.
 		if (Constants.INITIAL_LOAD) {
 			FileLoader file = new FileLoader();
-			FileLoaderInsert beneficiaryImpl = new FileLoaderInsert();
+			//FileLoaderInsert beneficiaryImpl = new FileLoaderInsert();
 			FileLoaderInsert.insertBeneficiary(file.readBeneficiaryFile()); }
 		
 		//displaying of main menu
@@ -39,7 +39,7 @@ public class SAPRunnerMain {
 					System.out.println("");
 				}
 			}catch (Exception e) {
-				System.out.println(e);
+				//System.out.println(e);
 				System.out.println("Invalid input.");
 			}
 		} while(!action.equalsIgnoreCase("Q"));
