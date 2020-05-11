@@ -117,7 +117,7 @@ public class SwitchDisplay {
 		display.DisplayAll(BeneficiaryCRUDImpl.ReadSapTblAll());
 	
 			Scanner scan = new Scanner(System.in);
-			String entered = "b";
+			String entered = "B";
 			do {
 			System.out.println("\n\n1 Display records per Status");
 			System.out.println("2 Display sorted by Address");
@@ -126,7 +126,7 @@ public class SwitchDisplay {
 			System.out.println("b to go back to main menu");
 			System.out.print("how to proceed: ");
 			entered = scan.next();
-			if(entered.equalsIgnoreCase("b")) {return;}
+			if(entered.equalsIgnoreCase("B")) {return;}
 			else if(entered.contentEquals("1")) {DisplayPerStatus();}
 			else if(entered.contentEquals("2")) {DisplaySortedAddress();}
 			else if(entered.contentEquals("3")) {DisplaySortedAge();}
@@ -135,7 +135,7 @@ public class SwitchDisplay {
 					|| !entered.equalsIgnoreCase("2")
 					|| !entered.equalsIgnoreCase("3")
 					|| !entered.equalsIgnoreCase("4")
-					|| !entered.equalsIgnoreCase("b"));
+					|| !entered.equalsIgnoreCase("B"));
 		
 	}
 	

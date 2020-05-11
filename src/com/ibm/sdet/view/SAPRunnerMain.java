@@ -42,7 +42,7 @@ public class SAPRunnerMain {
 				System.out.println(e);
 				System.out.println("Invalid input.");
 			}
-		} while(action.equalsIgnoreCase("Q"));
+		} while(!action.equalsIgnoreCase("Q"));
 		System.out.println("You have exited the pgm.");
 	}
 
