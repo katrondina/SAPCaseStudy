@@ -1,13 +1,8 @@
 package com.ibm.sdet.view;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.SQLException;
-
-import com.ibm.sdet.model.Beneficiary;
-import com.ibm.sdet.model.BeneficiaryInsertImpl;
-import com.ibm.sdet.model.BeneficiaryCRUDImpl;
+import com.ibm.sdet.model.FileLoaderInsert;
 import com.ibm.sdet.model.FileLoader;
 import com.ibm.sdet.processor.InputProcessor;
 import com.ibm.sdet.util.Constants;
@@ -16,18 +11,17 @@ public class SAPRunnerMain {
 
 	public static void main(String[] args) {
 		
-		BeneficiaryCRUDImpl beneficiaryReadImpl = new BeneficiaryCRUDImpl();
-		char action = 'Y';
-		//FileLoader file2 = new FileLoader();
-		//file2.readBeneficiaryFile();
+		String action = "Y";
 		InputProcessor inputProcessor = new InputProcessor();
 		boolean validAction = false;
 		
+		//Initial load of xls file, if initial_load is true then this will execute.
 		if (Constants.INITIAL_LOAD) {
 			FileLoader file = new FileLoader();
-			BeneficiaryInsertImpl beneficiaryImpl = new BeneficiaryInsertImpl();
-			beneficiaryImpl.insertBeneficiary(file.readBeneficiaryFile()); }
+			FileLoaderInsert beneficiaryImpl = new FileLoaderInsert();
+			FileLoaderInsert.insertBeneficiary(file.readBeneficiaryFile()); }
 		
+		//displaying of main menu
 		do {
 			try {
 				System.out.println("\n\nMain Menu");
@@ -39,37 +33,17 @@ public class SAPRunnerMain {
 				System.out.println("q to exit");
 				System.out.print("input: ");
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-				action = (char)br.read();
+				action = br.readLine();
 				validAction = inputProcessor.UserInputValidator(action);
-				
-				
 				if(validAction) {
-					System.out.println("\n\nnice");
+					System.out.println("");
 				}
-				
-				
 			}catch (Exception e) {
+				System.out.println(e);
 				System.out.println("Invalid input.");
 			}
-		} while(action != 'q');
+		} while(action.equalsIgnoreCase("Q"));
 		System.out.println("You have exited the pgm.");
-		
-		//read
-		if (Constants.INITIAL_LOAD) {
-		try {
-			System.out.println("reading?");
-			Beneficiary ben = beneficiaryReadImpl.ReadSapTbl(5);
-		} catch (SQLException e) {
-			System.out.println(e);
-		}}
-		
-		
-		/*read
-		 * try { DisplayBeneficiaryList displayBeneficiaryList = new
-		 * DisplayBeneficiaryList();
-		 * displayBeneficiaryList.DisplayPerStatus(beneficiaryReadImpl.ReadSapTblAll());
-		 * } catch (SQLException e) { System.out.println(e); }
-		 */
 	}
 
 }

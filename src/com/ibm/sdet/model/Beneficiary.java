@@ -1,7 +1,5 @@
 package com.ibm.sdet.model;
 
-import com.ibm.sdet.util.BeneficiaryStatus;
-
 public class Beneficiary {
 	private Integer id;
 	private String name;

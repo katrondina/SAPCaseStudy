@@ -1,7 +1,6 @@
 package com.ibm.sdet.processor;
 
 import com.ibm.sdet.model.Beneficiary;
-import com.ibm.sdet.util.BeneficiaryStatus;
 import com.ibm.sdet.util.Constants;
 
 public class StatusValidatorProcessor {
@@ -10,16 +9,18 @@ public class StatusValidatorProcessor {
 
 		String finalBeneficiaryStatus = Constants.PENDING;
 		
+		// determine if status should be approved
 		if (beneficiary.getAge() >= Constants.SENIORCITIZEN
 			|| beneficiary.getOtherNote().matches(Constants.APPROVED_NOTE_REGEX)
 			|| beneficiary.getOccupation().matches(Constants.APPROVED_OCCUPATION_REGEX)
 			|| (beneficiary.getMonthlyIncome() <= Constants.MAX_APPROVED_INCOME
 			    && beneficiary.getMonthlyIncome() > Constants.ZERO)
-			|| beneficiary.getOccupation() == Constants.NONE) {
+			|| beneficiary.getOccupation().equalsIgnoreCase(Constants.NONE)) {
 			finalBeneficiaryStatus = Constants.APPROVED;
 		}
 		
-		if (beneficiary.getOtherNote().contains(Constants.ECQVIOLATOR)
+		// determine if status should be denied
+		if (beneficiary.getOtherNote().equalsIgnoreCase(Constants.ECQVIOLATOR)
 			|| beneficiary.getMonthlyIncome() >= Constants.RICH_PEOPLE_INCOME) {
 			finalBeneficiaryStatus = Constants.DENIED;
 		}

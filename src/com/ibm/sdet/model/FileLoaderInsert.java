@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.ibm.sdet.config.ConnectionPool;
 
-public class BeneficiaryInsertImpl {
+public class FileLoaderInsert {
 	private static ConnectionPool connectionPool = ConnectionPool.getInstance();
 
 	public static void createSAPTbl() throws SQLException{

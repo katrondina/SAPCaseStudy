@@ -67,17 +67,11 @@ public class FileLoader {
 					}
 					
 				}
-				//System.out.println(beneficiaries);
 				ben.setStatus(statusValidator.ValidateStatus(ben));
 				beneficiaries.add(ben);
-				//System.out.println("status : " + ben.getStatus());
-				//System.out.println(" == ");
 				rowCounter = rowCounter + 1;
 			}
 			System.out.println("Nos of records read: " + rowCounter);
-			for (Beneficiary bben : beneficiaries) {
-				//System.out.println(bben.getName() + " : " + bben.getStatus());
-			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
