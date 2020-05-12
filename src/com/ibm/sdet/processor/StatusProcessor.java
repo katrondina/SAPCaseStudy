@@ -3,7 +3,7 @@ package com.ibm.sdet.processor;
 import com.ibm.sdet.model.Beneficiary;
 import com.ibm.sdet.util.Constants;
 
-public class StatusValidatorProcessor {
+public class StatusProcessor {
 	
 	public String ValidateStatus(Beneficiary beneficiary) {
 

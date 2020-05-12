@@ -2,7 +2,7 @@ package com.ibm.sdet.util;
 
 public class Constants {
 	
-	public static final boolean INITIAL_LOAD = true;
+	public static final boolean INITIAL_LOAD = false;
 	public static final String FILENAME = "SAP Case Study.xlsx";
 	public static final String PENDING = "PENDING";
 	public static final String APPROVED = "APPROVED";

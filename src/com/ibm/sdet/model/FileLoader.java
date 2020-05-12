@@ -2,22 +2,24 @@ package com.ibm.sdet.model;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.ibm.sdet.processor.StatusValidatorProcessor;
+import com.ibm.sdet.processor.DuplicateProcessor;
+import com.ibm.sdet.processor.StatusProcessor;
 import com.ibm.sdet.util.Constants;
 
 public class FileLoader {
 
-	private List<Beneficiary> beneficiaries = new ArrayList<Beneficiary>();
-	private StatusValidatorProcessor statusValidator = new StatusValidatorProcessor();
-	private int rowCounter = 0;
-
-	public List<Beneficiary> readBeneficiaryFile() {
+	public void readBeneficiaryFile() throws SQLException {
+		List<Beneficiary> beneficiaries = new ArrayList<Beneficiary>();
+		StatusProcessor statusValidator = new StatusProcessor();
+		DuplicateProcessor duplicateProcessor = new DuplicateProcessor();
+		int rowCounter = 0;
 		System.out.println("Reading " + Constants.FILENAME + " ...");
 		FileInputStream fis;
 		try {
@@ -65,16 +67,16 @@ public class FileLoader {
 						ben.setOtherNote(row.getCell(j).getStringCellValue());
 						//System.out.println("Note : " + ben.getOtherNote());
 					}
-					
 				}
 				ben.setStatus(statusValidator.ValidateStatus(ben));
+				duplicateProcessor.DuplicateValidator(ben);
 				beneficiaries.add(ben);
 				rowCounter = rowCounter + 1;
 			}
-			System.out.println("Nos of records read: " + rowCounter);
+			System.out.println("\nNos of records read: " + rowCounter);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return beneficiaries;
+		//return beneficiaries;
 	}
 }

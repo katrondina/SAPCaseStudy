@@ -2,10 +2,10 @@ package com.ibm.sdet.processor;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import com.ibm.sdet.view.SwitchDisplay;
+import com.ibm.sdet.view.DisplayInstructions;
 
-public class InputProcessor {
-	SwitchDisplay switchDisplay = new SwitchDisplay();
+public class UserInputProcessor {
+	DisplayInstructions switchDisplay = new DisplayInstructions();
 	public Boolean UserInputValidator(String action) throws IOException, SQLException {
 		switch(action) {
 		case "1":

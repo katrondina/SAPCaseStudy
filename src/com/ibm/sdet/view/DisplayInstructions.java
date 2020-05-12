@@ -10,19 +10,21 @@ import java.util.List;
 import java.util.Scanner;
 import com.ibm.sdet.model.Beneficiary;
 import com.ibm.sdet.model.BeneficiaryCRUDImpl;
-import com.ibm.sdet.processor.StatusValidatorProcessor;
+import com.ibm.sdet.processor.StatusProcessor;
 import com.ibm.sdet.processor.AddressComparator;
 import com.ibm.sdet.processor.AgeComparator;
+import com.ibm.sdet.processor.DuplicateProcessor;
 import com.ibm.sdet.processor.NameComparator;
 import com.ibm.sdet.util.Constants;
 
-public class SwitchDisplay {
+public class DisplayInstructions {
 
-	StatusValidatorProcessor statusValidator = new StatusValidatorProcessor();
-	DisplayBeneficiaryList display = new DisplayBeneficiaryList();
+	StatusProcessor statusValidator = new StatusProcessor();
+	DisplayBeneficiary display = new DisplayBeneficiary();
 	
 	//for inserting a record
-	public void DisplayInsertInstructions() throws IOException {
+	public void DisplayInsertInstructions() throws IOException, SQLException {
+		DuplicateProcessor duplicate = new DuplicateProcessor();
 		String input = "N";
 		int loopCounter = 1;
 		Beneficiary ben = new Beneficiary();
@@ -80,7 +82,7 @@ public class SwitchDisplay {
 		} while (!input.equalsIgnoreCase("Y"));
 		
 		ben.setStatus(statusValidator.ValidateStatus(ben));
-		BeneficiaryCRUDImpl.InsertABeneficiary(ben);
+		duplicate.DuplicateValidator(ben);
 	}
 	
 	// for deleting a record
@@ -88,7 +90,7 @@ public class SwitchDisplay {
 		String input = "N";
 		int idToDelete;
 		do {
-		DisplayBeneficiaryList display = new DisplayBeneficiaryList();
+		DisplayBeneficiary display = new DisplayBeneficiary();
 		System.out.print("Enter the id you want to delete: ");
 		BufferedReader brDelete = new BufferedReader(new InputStreamReader(System.in));
 		String idToDeleteString = brDelete.readLine();
@@ -154,12 +156,19 @@ public class SwitchDisplay {
 	
 	// for retrieving a record
 	public void DisplayARecordInstructions() throws IOException, SQLException {
-		System.out.println("Let's display a record.");
+		System.out.println("\nLet's display a record.");
 		System.out.print("Please enter beneficiary id: ");
 		BufferedReader brb = new BufferedReader(new InputStreamReader(System.in));
 		String idEnteredString = brb.readLine();
 		int idEntered = Integer.parseInt(idEnteredString);
-		display.DisplayABeneficiary(BeneficiaryCRUDImpl.ReadSapTbl(idEntered));
+		
+		if(BeneficiaryCRUDImpl.ReadSapTbl(idEntered).getName() != null) {
+			display.DisplayHeader();
+			display.DisplayABeneficiary(BeneficiaryCRUDImpl.ReadSapTbl(idEntered));
+		} else {
+			System.out.println("\nID# " + idEntered + " is not found in the database." );
+		}
+		
 	}
 	
 	// for updating a record

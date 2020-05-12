@@ -2,24 +2,26 @@ package com.ibm.sdet.view;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import com.ibm.sdet.model.FileLoaderInsert;
+import java.sql.SQLException;
 import com.ibm.sdet.model.FileLoader;
-import com.ibm.sdet.processor.InputProcessor;
+import com.ibm.sdet.processor.UserInputProcessor;
 import com.ibm.sdet.util.Constants;
 
-public class SAPRunnerMain {
+public class DisplayMainMenu {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		
 		String action = "Y";
-		InputProcessor inputProcessor = new InputProcessor();
+		UserInputProcessor inputProcessor = new UserInputProcessor();
 		boolean validAction = false;
 		
 		//Initial load of xls file, if initial_load is true then this will execute.
 		if (Constants.INITIAL_LOAD) {
 			FileLoader file = new FileLoader();
+			file.readBeneficiaryFile();
 			//FileLoaderInsert beneficiaryImpl = new FileLoaderInsert();
-			FileLoaderInsert.insertBeneficiary(file.readBeneficiaryFile()); }
+			//FileLoaderInsert.insertBeneficiary(file.readBeneficiaryFile()); 
+			}
 		
 		//displaying of main menu
 		do {
@@ -45,5 +47,4 @@ public class SAPRunnerMain {
 		} while(!action.equalsIgnoreCase("Q"));
 		System.out.println("You have exited the pgm.");
 	}
-
 }

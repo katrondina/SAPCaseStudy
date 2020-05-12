@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ibm.sdet.config.ConnectionPool;
-import com.ibm.sdet.view.DisplayBeneficiaryList;
+import com.ibm.sdet.view.DisplayBeneficiary;
 
 public class BeneficiaryCRUDImpl{
 	
 	private static ConnectionPool connectionPool = ConnectionPool.getInstance();
 	
 	public static Beneficiary ReadSapTbl(int idEntered) throws SQLException{
-		System.out.println("Retrieving record...\n");
+		//System.out.print("Retrieving record...");
 		ResultSet rs;
 		Beneficiary beneficiary = new Beneficiary();
 		String readSapTblQuery = "select * from sap where id in (?)";
@@ -42,10 +42,37 @@ public class BeneficiaryCRUDImpl{
 		return beneficiary;
 	}
 	
+	public static List<Beneficiary> ReadSapTblByName(String enteredName) throws SQLException{
+		List<Beneficiary> ben = new ArrayList<Beneficiary>();
+		ResultSet rs;
+		String readSapTblAll = "select * from sap where name in (?)";
+		PreparedStatement preparedStatement = null;
+		Connection connection = connectionPool.getConnection();
+		preparedStatement = connection.prepareStatement(readSapTblAll);
+		preparedStatement.setString(1, enteredName);
+		rs = preparedStatement.executeQuery();
+		while (rs.next()) {
+			Beneficiary benn = new Beneficiary();
+			benn.setId(rs.getInt(1));
+			benn.setName(rs.getString(2));
+			benn.setCity(rs.getString(3));
+			benn.setAge(rs.getInt(4));
+			benn.setMonthlyIncome(rs.getDouble(5));
+			benn.setOccupation(rs.getString(6));
+			benn.setOtherNote(rs.getString(7));
+			benn.setStatus(rs.getString(8));
+			ben.add(benn);
+		}
+		preparedStatement.close();
+		rs.close();
+		connection.close();
+		return ben;
+	}
+	
 	public static List<Beneficiary> ReadSapTblAll() throws SQLException{
 		List<Beneficiary> ben = new ArrayList<Beneficiary>();
 		int rowCounter = 0;
-		System.out.println("Retrieving records...");
+		//System.out.print("Retrieving records...");
 		ResultSet rs;
 		String readSapTblAll = "select * from sap";
 		PreparedStatement preparedStatement = null;
@@ -65,7 +92,6 @@ public class BeneficiaryCRUDImpl{
 			rowCounter = rowCounter + 1;
 			ben.add(benn);
 		}
-		System.out.println("No of beneficiaries retrieved: "+rowCounter);
 		preparedStatement.close();
 		rs.close();
 		connection.close();
@@ -73,7 +99,7 @@ public class BeneficiaryCRUDImpl{
 	}
 	
 	public static void UpdateSapTbl(int idEntered, String statusEntered) throws SQLException {
-		System.out.println("Updating beneficiary...");
+		//System.out.print("Updating beneficiary...");
 		int rs;
 		String updateSapTbl = "Update sap set status = ? where id in (?)";
 		PreparedStatement preparedStatement = null;
@@ -82,16 +108,16 @@ public class BeneficiaryCRUDImpl{
 		preparedStatement.setString(1, statusEntered);
 		preparedStatement.setInt(2, idEntered);
 		rs = preparedStatement.executeUpdate();
-		if(rs>0) {System.out.println("Beneficiary updated.");}
+		if(rs>0) {System.out.print("Beneficiary updated.");}
 		preparedStatement.close();
 		connection.close();
 	}
 	
-	public static void InsertABeneficiary(Beneficiary ben) {
-		System.out.println("Inserting beneficiary to database...");
+	public static void InsertABeneficiary(Beneficiary ben) throws SQLException {
+		//System.out.print("Inserting beneficiary to database...");
 		ResultSet rs;
 		int id;
-		DisplayBeneficiaryList display = new DisplayBeneficiaryList();
+		DisplayBeneficiary display = new DisplayBeneficiary();
 		String query = "insert into sap("
 				+ "name, city, age, monthlyIncome, occupation, otherNote, status)"
 				+ "value(?,?,?,?,?,?,?)";
@@ -110,11 +136,12 @@ public class BeneficiaryCRUDImpl{
 				rs = preparedStatement.getGeneratedKeys();
 				if(rs.next()) {
 					id = rs.getInt(1);
-					System.out.println("Beneficiary added.");
+					System.out.println("\nBeneficiary added.");
 					display.DisplayABeneficiary(ReadSapTbl(id));
 				}
 				preparedStatement.close();
 				rs.close();
+				connection.close();
 			} catch (Exception e) {
 				System.out.println(e);
 				System.out.println("Please check your connection string");
@@ -122,7 +149,7 @@ public class BeneficiaryCRUDImpl{
 	}
 	
 	public static void DeleteSapTbl(int idEntered) throws SQLException{
-		System.out.println("Deleting beneficiary "+idEntered+".\n");
+		//System.out.print("Deleting beneficiary ID#"+idEntered+".\n");
 		int rs;
 		String deleteSapTblQuery = "delete from sap where id in (?)";
 		PreparedStatement preparedStatement = null;
@@ -130,7 +157,7 @@ public class BeneficiaryCRUDImpl{
 		preparedStatement = connection.prepareStatement(deleteSapTblQuery);
 		preparedStatement.setInt(1, idEntered);
 		rs = preparedStatement.executeUpdate();
-		if(rs>0) {System.out.println("Beneficiary deleted.");}
+		if(rs>0) {System.out.println("\nBeneficiary #" + idEntered + " has been deleted.");}
 		preparedStatement.close();
 		connection.close();
 	}

@@ -12,8 +12,8 @@ public class FileLoaderInsert {
 
 	public static void createSAPTbl() throws SQLException{
 		String createTblQuery = "create table sap("
-				+ "id int(16) auto_increment,"
-				+ "name varchar(100),"
+				+ "id int(16) auto_increment unique,"
+				+ "name varchar(100) not null,"
 				+ "city varchar(100),"
 				+ "age int(12),"
 				+ "monthlyIncome double(20),"
